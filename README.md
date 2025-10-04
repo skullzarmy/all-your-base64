@@ -18,10 +18,9 @@ A modern, efficient, purpose-built CLI utility to convert any possible input fil
 
 ✨ **Modern & Fast** - Built with TypeScript and optimized for performance  
 🔍 **Smart Detection** - Industry-leading MIME type detection via [file-type](https://github.com/sindresorhus/file-type) + [mime-types](https://github.com/jshttp/mime-types)  
-📁 **Versatile Input** - Files, stdin, strings, streams  
+📁 **Versatile Input** - Files, stdin, strings  
 🎨 **Multiple Outputs** - Raw, JSON, JS, TS, CSS, HTML, XML, YAML, Markdown  
 🔄 **Bidirectional** - Both encoding and decoding support  
-⚡ **Streaming** - Handle large files efficiently  
 🛡️ **Robust** - Comprehensive error handling and validation  
 📊 **Metadata** - File information, hashing, and processing stats  
 🎯 **Data URIs** - Generate data URIs with proper MIME types  
@@ -193,8 +192,6 @@ ayb64 encode [input] [options]
 - `-w, --wrap <columns>` - Wrap base64 output at specified column width
 - `-d, --data-uri` - Generate data URI with MIME type
 - `-m, --metadata` - Include file metadata in output
-- `-s, --streaming` - Use streaming for large files
-- `-c, --chunk-size <bytes>` - Chunk size for streaming (default: 64KB)
 - `--no-mime` - Disable MIME type detection
 - `--quiet` - Suppress non-essential output
 
@@ -213,7 +210,6 @@ ayb64 decode [input] [options]
 **Options:**
 
 - `-o, --output <path>` - Output file path (default: stdout)
-- `-s, --streaming` - Use streaming for large files
 - `-m, --metadata` - Show metadata if available
 - `--quiet` - Suppress non-essential output
 
@@ -350,21 +346,6 @@ ayb64 encode file.txt --format css
 
 ## Advanced Usage
 
-### Streaming Large Files
-
-For files larger than 1GB, use streaming mode:
-
-```bash
-ayb64 encode largefile.zip --streaming --chunk-size 1MB
-```
-
-### Custom Chunk Sizes
-
-```bash
-ayb64 encode file.bin --streaming --chunk-size 512KB
-ayb64 encode file.bin --streaming --chunk-size 2MB
-```
-
 ### Line Wrapping
 
 Wrap base64 output for better readability:
@@ -417,7 +398,6 @@ Common error types:
 - **File not found** - Check file path and permissions
 - **Invalid base64** - Verify input format when decoding
 - **Permission denied** - Check file/directory permissions
-- **File too large** - Use `--streaming` for large files
 - **Invalid format** - Use `--help` to see supported formats
 
 ## API Reference
@@ -454,26 +434,35 @@ The tool automatically detects file types using the `file-type` package, support
 
 ### Benchmarks
 
-| File Size | Mode      | Time   | Memory |
-| --------- | --------- | ------ | ------ |
-| 1KB       | Standard  | <1ms   | ~2MB   |
-| 1MB       | Standard  | ~10ms  | ~4MB   |
-| 100MB     | Standard  | ~200ms | ~150MB |
-| 100MB     | Streaming | ~250ms | ~8MB   |
-| 1GB       | Streaming | ~2.5s  | ~8MB   |
+| File Size | Time  | Memory    |
+| --------- | ----- | --------- |
+| 1 KB      | 5ms   | 0 B       |
+| 1 MB      | 8ms   | 92.26 KB  |
+| 10 MB     | 51ms  | 170.35 KB |
+| 100 MB    | 523ms | 257.27 KB |
+| 200 MB    | 1.0s  | 447.2 KB  |
+
+_Benchmarks run on real hardware: MacBook Pro, 2.4 GHz 8-Core Intel Core i9, 32GB DDR4, macOS 15.6.1_
+
+**Performance Notes:**
+
+- Memory usage shows peak heap growth during encoding
+- Very memory-efficient base64 implementation
+- Processing time scales reasonably with file size
+
+_Benchmarks run on real hardware using `npm run benchmark`_
 
 ### Optimization Tips
 
-1. **Use streaming** for files > 100MB
-2. **Adjust chunk size** based on available memory
-3. **Avoid metadata** for simple conversions
-4. **Use raw format** for best performance
+1. **Use raw format** for best performance
+2. **Avoid metadata** for simple conversions
+3. **Use appropriate wrap settings** for your use case
+4. **Process files individually** rather than in large batches
 
 ## Configuration
 
 ### Environment Variables
 
-- `AYB64_CHUNK_SIZE` - Default chunk size for streaming
 - `AYB64_MAX_MEMORY` - Maximum memory usage threshold
 - `AYB64_QUIET` - Default quiet mode setting
 
@@ -483,10 +472,8 @@ Create `~/.ayb64rc.json` for default settings:
 
 ```json
 {
-  "chunkSize": "1MB",
   "format": "raw",
   "wrap": 76,
-  "streaming": false,
   "metadata": false
 }
 ```
@@ -555,9 +542,6 @@ A: Run `npm install` to install dependencies.
 
 **Q: "Permission denied" errors**  
 A: Check file permissions: `chmod +r filename` or run with appropriate privileges.
-
-**Q: "File too large" warnings**  
-A: Use `--streaming` mode: `ayb64 encode largefile --streaming`
 
 **Q: Output is corrupted**  
 A: Ensure proper handling of binary data in your shell/terminal.
@@ -642,7 +626,6 @@ All Your Base64 works seamlessly across platforms:
 - Initial release
 - Core encoding/decoding functionality
 - Multiple output formats
-- Streaming support
 - Comprehensive error handling
 - Full test coverage
 

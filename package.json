@@ -15,6 +15,7 @@
     "mcp": "tsx src/mcp-server.ts",
     "test": "vitest",
     "test:coverage": "vitest --coverage",
+    "benchmark": "tsx scripts/benchmark.ts",
     "lint": "eslint src/**/*.ts",
     "lint:fix": "eslint src/**/*.ts --fix",
     "format": "prettier --write src/**/*.ts",

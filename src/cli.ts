@@ -94,8 +94,6 @@ program
   .option('-w, --wrap <columns>', 'Wrap base64 output at specified column width', parseInt)
   .option('-d, --data-uri', 'Generate data URI with MIME type', false)
   .option('-m, --metadata', 'Include file metadata in output', false)
-  .option('-s, --streaming', 'Use streaming for large files', false)
-  .option('-c, --chunk-size <bytes>', 'Chunk size for streaming (bytes)', '64KB')
   .option('--no-mime', 'Disable MIME type detection')
   .option('--quiet', 'Suppress non-essential output', false)
   .action(async (input: string | undefined, options: CliOptions) => {
@@ -142,7 +140,6 @@ program
   .description('Decode base64 input')
   .argument('[input]', 'Input file path or base64 string (use - for stdin)')
   .option('-o, --output <path>', 'Output file path (default: stdout)')
-  .option('-s, --streaming', 'Use streaming for large files', false)
   .option('-m, --metadata', 'Show metadata if available', false)
   .option('--quiet', 'Suppress non-essential output', false)
   .action(async (input: string | undefined, options: CliOptions) => {
@@ -288,9 +285,6 @@ async function buildConversionOptions(
     inputContent = input;
   }
 
-  // Parse chunk size
-  const chunkSize = parseChunkSize(options.chunkSize || '64KB');
-
   return {
     inputType,
     input: inputContent,
@@ -301,8 +295,8 @@ async function buildConversionOptions(
     wrapAt: options.wrap,
     dataUri: options.dataUri || false,
     mode,
-    streaming: options.streaming || false,
-    chunkSize,
+    streaming: false,
+    chunkSize: 0,
   };
 }
 
@@ -323,25 +317,6 @@ async function isFile(path: string): Promise<boolean> {
   } catch {
     return false;
   }
-}
-
-function parseChunkSize(size: string): number {
-  const units: Record<string, number> = {
-    B: 1,
-    KB: 1024,
-    MB: 1024 * 1024,
-    GB: 1024 * 1024 * 1024,
-  };
-
-  const match = size.match(/^(\d+)\s*(B|KB|MB|GB)?$/i);
-  if (!match) {
-    throw new Error(`Invalid chunk size format: ${size}`);
-  }
-
-  const value = parseInt(match[1]);
-  const unit = (match[2] || 'B').toUpperCase();
-
-  return value * (units[unit] || 1);
 }
 
 function displayMetadata(result: ConversionResult) {
