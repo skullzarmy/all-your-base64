@@ -6,7 +6,7 @@
 
 A modern, efficient, purpose-built CLI utility to convert any possible input file into a base64 string with comprehensive output options. Built with TypeScript and designed for both performance and developer experience.
 
-[![npm version](https://badge.fury.io/js/all-your-base64.svg)](https://badge.fury.io/js/all-your-base64)
+[![npm version](https://badge.fury.io/js/ayb64.svg)](https://badge.fury.io/js/ayb64)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![CI](https://github.com/skullzarmy/all-your-base64/workflows/CI/badge.svg)](https://github.com/skullzarmy/all-your-base64/actions)
 
@@ -49,19 +49,19 @@ Perfect for developers who need more than just basic file-to-base64 conversion.
 ### Global Installation (Recommended)
 
 ```bash
-npm install -g all-your-base64
+npm install -g ayb64
 ```
 
 ### Local Installation
 
 ```bash
-npm install all-your-base64
+npm install ayb64
 ```
 
 ### Using npx (No Installation)
 
 ```bash
-npx all-your-base64 --help
+npx ayb64 --help
 # or use the shorter command
 npx ayb64 --help
 ```
