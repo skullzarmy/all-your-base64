@@ -10,6 +10,8 @@ A modern, efficient, purpose-built CLI utility to convert any possible input fil
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![CI](https://github.com/skullzarmy/all-your-base64/workflows/CI/badge.svg)](https://github.com/skullzarmy/all-your-base64/actions)
 
+![CLI output sample](cli.png)
+
 ## Quick Navigation
 
 🚀 [Installation](#installation) • 🎯 [Quick Start](#quick-start) • 🤖 [MCP Server](#mcp-server-for-ai-agents) • 📖 [Commands](#commands) • 🎨 [Output Formats](#output-formats) • ⚡ [Advanced Usage](#advanced-usage) • 🔧 [Troubleshooting](#troubleshooting) • 🧪 [API Reference](#api-reference)
