@@ -3,6 +3,7 @@
 import { Command } from 'commander';
 import { promises as fs } from 'fs';
 import { stdin as processStdin, stdout } from 'process';
+import figlet from 'figlet';
 import { Base64Engine } from './base64-engine.js';
 import { OutputFormatter } from './output-formatter.js';
 import type { ConversionOptions, ConversionResult } from './types.js';
@@ -16,13 +17,21 @@ const program = new Command();
 const engine = new Base64Engine();
 const formatter = new OutputFormatter();
 
-// ASCII art banner
-const banner = `
-╔══════════════════════════════════════════════════════════════╗
-║  All Your Base64 - Modern Base64 Conversion Utility         ║
-║  "All your base64 are belong to us!"                        ║
-╚══════════════════════════════════════════════════════════════╝
-`;
+// Generate figlet banner
+function generateBanner(): string {
+  try {
+    return (
+      figlet.textSync('ayb64', {
+        font: 'Small Slant',
+        horizontalLayout: 'default',
+        verticalLayout: 'default',
+      }) + '\n"All your base64 are belong to us!"\n'
+    );
+  } catch {
+    // Fallback if figlet fails
+    return 'ayb64 - All Your Base64\n"All your base64 are belong to us!"\n';
+  }
+}
 
 program
   .name('ayb64')
@@ -30,7 +39,6 @@ program
     'Modern, efficient, purpose-built CLI utility to convert any possible input file into a base64 string.'
   )
   .version('1.0.0')
-  .option('--banner', 'Show banner', false)
   .addHelpText(
     'afterAll',
     `
@@ -98,11 +106,18 @@ program
   .option('--quiet', 'Suppress non-essential output', false)
   .action(async (input: string | undefined, options: CliOptions) => {
     try {
-      if (options.banner || (!input && !options.quiet)) {
-        console.log(banner);
+      if (!options.quiet) {
+        console.log(generateBanner());
       }
 
       const conversionOptions = await buildConversionOptions('encode', input, options);
+
+      // Show input info
+      if (!options.quiet) {
+        const inputInfo = getInputInfo(input, conversionOptions);
+        console.log(`📥 Input: ${inputInfo}`);
+      }
+
       const result = await engine.convert(conversionOptions);
 
       if (!result.success) {
@@ -119,12 +134,15 @@ program
       if (options.output) {
         await fs.writeFile(options.output, formattedOutput);
         if (!options.quiet) {
-          console.log('✓', `Encoded to ${options.output}`);
+          console.log(`📤 Output: file → ${options.output} (${options.format || 'raw'} format)`);
           if (options.metadata) {
             displayMetadata(result);
           }
         }
       } else {
+        if (!options.quiet) {
+          console.log(`📤 Output: stdout (${options.format || 'raw'} format)`);
+        }
         stdout.write(formattedOutput);
       }
     } catch (error) {
@@ -144,11 +162,18 @@ program
   .option('--quiet', 'Suppress non-essential output', false)
   .action(async (input: string | undefined, options: CliOptions) => {
     try {
-      if (options.banner || (!input && !options.quiet)) {
-        console.log(banner);
+      if (!options.quiet) {
+        console.log(generateBanner());
       }
 
       const conversionOptions = await buildConversionOptions('decode', input, options);
+
+      // Show input info
+      if (!options.quiet) {
+        const inputInfo = getInputInfo(input, conversionOptions);
+        console.log(`📥 Input: ${inputInfo}`);
+      }
+
       const result = await engine.convert(conversionOptions);
 
       if (!result.success) {
@@ -163,12 +188,15 @@ program
           await fs.writeFile(options.output, result.content);
         }
         if (!options.quiet) {
-          console.log('✓', `Decoded to ${options.output}`);
+          console.log(`📤 Output: file → ${options.output}`);
           if (options.metadata) {
             displayMetadata(result);
           }
         }
       } else {
+        if (!options.quiet) {
+          console.log(`📤 Output: stdout`);
+        }
         if (typeof result.content === 'string') {
           stdout.write(result.content);
         } else {
@@ -316,6 +344,22 @@ async function isFile(path: string): Promise<boolean> {
     return stats.isFile();
   } catch {
     return false;
+  }
+}
+
+function getInputInfo(input: string | undefined, options: ConversionOptions): string {
+  if (options.inputType === 'stdin') {
+    return 'stdin';
+  } else if (options.inputType === 'file') {
+    return `file → ${input}`;
+  } else {
+    const preview =
+      typeof options.input === 'string'
+        ? options.input.length > 20
+          ? options.input.substring(0, 20) + '...'
+          : options.input
+        : 'buffer';
+    return `string → "${preview}"`;
   }
 }
 
