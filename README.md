@@ -10,6 +10,10 @@ A modern, efficient, purpose-built CLI utility to convert any possible input fil
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![CI](https://github.com/skullzarmy/all-your-base64/workflows/CI/badge.svg)](https://github.com/skullzarmy/all-your-base64/actions)
 
+## Quick Navigation
+
+🚀 [Installation](#installation) • 🎯 [Quick Start](#quick-start) • 🤖 [MCP Server](#mcp-server-for-ai-agents) • 📖 [Commands](#commands) • 🎨 [Output Formats](#output-formats) • ⚡ [Advanced Usage](#advanced-usage) • 🔧 [Troubleshooting](#troubleshooting) • 🧪 [API Reference](#api-reference)
+
 ## Features
 
 ✨ **Modern & Fast** - Built with TypeScript and optimized for performance  
@@ -41,6 +45,8 @@ npm install all-your-base64
 
 ```bash
 npx all-your-base64 --help
+# or use the shorter command
+npx ayb64 --help
 ```
 
 ## Quick Start
@@ -95,13 +101,16 @@ All Your Base64 includes a powerful **Model Context Protocol (MCP) server** opti
 #### Start the MCP Server
 
 ```bash
+# Using the CLI command (recommended)
+ayb64 mcp
+
+# Direct binary
+ayb64-mcp
+
 # Development mode
 npm run mcp
 
-# Built version
-ayb64-mcp
-
-# Or via npx
+# Or via npx with source
 npx tsx src/mcp-server.ts
 ```
 
@@ -113,8 +122,8 @@ npx tsx src/mcp-server.ts
 {
   "mcpServers": {
     "ayb64": {
-      "command": "npx",
-      "args": ["-y", "all-your-base64", "mcp"]
+      "command": "ayb64",
+      "args": ["mcp"]
     }
   }
 }
@@ -186,6 +195,7 @@ ayb64 encode [input] [options]
 - `-m, --metadata` - Include file metadata in output
 - `-s, --streaming` - Use streaming for large files
 - `-c, --chunk-size <bytes>` - Chunk size for streaming (default: 64KB)
+- `--no-mime` - Disable MIME type detection
 - `--quiet` - Suppress non-essential output
 
 ### `decode` / `d`
@@ -222,6 +232,18 @@ ayb64 info <input> [options]
 **Options:**
 
 - `-j, --json` - Output as JSON
+
+### `mcp`
+
+Start the Model Context Protocol server for AI agents.
+
+```bash
+ayb64 mcp
+```
+
+This command starts the MCP server which provides base64 conversion tools optimized for AI agents and coding workflows. The server includes memory, job recall, checksums, and specialized tools.
+
+**No options** - The MCP server runs as a standalone process communicating via stdio.
 
 ### `batch` / `b`
 
@@ -507,7 +529,10 @@ ayb64 encode logo.png --data-uri > logo-data.css
 Create JavaScript modules:
 
 ```bash
-ayb64 encode assets/*.png --format js --batch
+# Use shell globbing until batch command is implemented
+for file in assets/*.png; do
+  ayb64 encode "$file" --format js -o "${file%.png}.js"
+done
 ```
 
 ### CI/CD Pipelines
