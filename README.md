@@ -28,6 +28,22 @@ A modern, efficient, purpose-built CLI utility to convert any possible input fil
 🎯 **Data URIs** - Generate data URIs with proper MIME types  
 🌍 **Cross-Platform** - macOS, Linux, Windows, Docker, Cloud ready
 
+## Why Choose ayb64?
+
+While basic base64 tools simply convert files to strings, **ayb64** provides a complete modern solution:
+
+🎨 **8 Output Formats** - Raw, JSON, JavaScript, TypeScript, CSS, HTML, XML, YAML, Markdown  
+🤖 **AI Integration** - Built-in MCP server with memory and job recall for AI workflows  
+🔍 **Smart Detection** - Industry-leading MIME type detection (100+ file types)  
+📋 **Rich Metadata** - File info, hashing, processing stats, timestamps  
+🎯 **Web-Ready** - Generate data URIs for immediate use in web development  
+⚡ **Performance** - TypeScript-built with optimized memory usage and benchmarked speed  
+🔄 **Versatile Input** - Files, stdin, strings with automatic detection  
+🛡️ **Production Ready** - Comprehensive error handling, validation, and testing  
+📊 **Developer Experience** - Modern CLI with helpful output and examples
+
+Perfect for developers who need more than just basic file-to-base64 conversion.
+
 ## Installation
 
 ### Global Installation (Recommended)

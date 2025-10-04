@@ -1,7 +1,7 @@
 {
-  "name": "all-your-base64",
+  "name": "ayb64",
   "version": "1.0.0",
-  "description": "Modern, efficient, purpose-built CLI utility to convert any possible input file into a base64 string with comprehensive output options",
+  "description": "Comprehensive base64 CLI with 8 output formats, MCP server for AI agents, MIME detection, metadata extraction, data URIs, and modern TypeScript architecture. Beyond basic conversion.",
   "main": "dist/index.js",
   "bin": {
     "ayb64": "dist/cli.js",
@@ -29,7 +29,9 @@
     "converter",
     "utility",
     "file",
-    "stream",
+    "mcp",
+    "model-context-protocol",
+    "ai",
     "nodejs"
   ],
   "author": "Joe Peterson",
