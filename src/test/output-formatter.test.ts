@@ -32,7 +32,7 @@ describe('OutputFormatter', () => {
       const parsed = JSON.parse(result);
 
       expect(parsed.data).toBe('SGVsbG8sIFdvcmxkIQ==');
-      expect(parsed.size).toBe(22); // base64 length
+      expect(parsed.size).toBe(20); // base64 length
     });
 
     it('should format as JavaScript module', async () => {
