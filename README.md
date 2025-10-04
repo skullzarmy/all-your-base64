@@ -68,6 +68,101 @@ echo "Hello, World!" | ayb64 encode
 ayb64 info myfile.jpg --json
 ```
 
+## MCP Server for AI Agents
+
+All Your Base64 includes a powerful **Model Context Protocol (MCP) server** optimized for AI agents and coding tasks. The MCP server provides memory, job recall, checksums for change detection, and specialized tools for AI workflows.
+
+### MCP Server Features
+
+🧠 **Smart Memory** - LRU cache with job recall by ID  
+🔍 **Change Detection** - SHA256 checksums detect file modifications  
+🤖 **AI Optimized** - Tools designed for coding and development workflows  
+📋 **Job History** - Track and recall previous encoding operations  
+🔗 **Data URIs** - Generate web-ready data URIs for images and assets  
+⚡ **Performance** - Lightweight, extensible, and robust
+
+### MCP Server Tools
+
+- **`encode`** - Encode files/data with format options and job tracking
+- **`decode`** - Decode base64 with auto-detection and file output
+- **`recall`** - Retrieve previous jobs by ID with full context
+- **`jobs`** - List recent operations with metadata
+- **`datauri`** - Generate data URIs optimized for web development
+- **`memory`** - Manage job cache (stats, clear)
+
+### Using the MCP Server
+
+#### Start the MCP Server
+
+```bash
+# Development mode
+npm run mcp
+
+# Built version
+ayb64-mcp
+
+# Or via npx
+npx tsx src/mcp-server.ts
+```
+
+#### Configure in Your MCP Client
+
+**VS Code/Cursor/Cline** (add to `mcp.json`):
+
+```json
+{
+  "mcpServers": {
+    "ayb64": {
+      "command": "npx",
+      "args": ["-y", "all-your-base64", "mcp"]
+    }
+  }
+}
+```
+
+**Claude Desktop**:
+
+```json
+{
+  "mcpServers": {
+    "ayb64": {
+      "command": "ayb64-mcp"
+    }
+  }
+}
+```
+
+#### Example MCP Workflows
+
+**Encode an image for web use:**
+
+```
+Tool: encode
+Input: {
+  "data": "/path/to/logo.png",
+  "isFile": true,
+  "format": "js",
+  "dataUri": true
+}
+Output: Job ID + JavaScript const with data URI
+```
+
+**Recall a previous job:**
+
+```
+Tool: recall
+Input: {"jobId": "job_1234567890_abc123"}
+Output: Full original result with metadata
+```
+
+**Generate data URI for CSS:**
+
+```
+Tool: datauri
+Input: {"input": "/path/to/background.jpg"}
+Output: data:image/jpeg;base64,... (ready for CSS)
+```
+
 ## Commands
 
 ### `encode` / `e`

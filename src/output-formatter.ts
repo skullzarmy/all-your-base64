@@ -67,6 +67,11 @@ export class OutputFormatter {
       wrapAt?: number;
     } = {}
   ): Promise<string> {
+    // Handle null/undefined content gracefully
+    if (!result.content) {
+      return '';
+    }
+
     let content = typeof result.content === 'string' ? result.content : result.content.toString();
 
     // Apply line wrapping if specified

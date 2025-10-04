@@ -5,12 +5,14 @@
   "main": "dist/index.js",
   "bin": {
     "ayb64": "dist/cli.js",
-    "all-your-base64": "dist/cli.js"
+    "all-your-base64": "dist/cli.js",
+    "ayb64-mcp": "dist/mcp-server.js"
   },
   "type": "module",
   "scripts": {
     "build": "tsc",
     "dev": "tsx src/cli.ts",
+    "mcp": "tsx src/mcp-server.ts",
     "test": "vitest",
     "test:coverage": "vitest --coverage",
     "lint": "eslint src/**/*.ts",
@@ -40,10 +42,12 @@
     "LICENSE"
   ],
   "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.19.1",
     "chalk": "^5.3.0",
     "commander": "^11.1.0",
     "file-type": "^19.0.0",
-    "mime-types": "^2.1.35"
+    "mime-types": "^2.1.35",
+    "zod": "^3.25.76"
   },
   "devDependencies": {
     "@types/mime-types": "^2.1.4",

@@ -239,6 +239,34 @@ program
     // TODO: Implement batch processing with glob support
   });
 
+// MCP Server command
+program
+  .command('mcp')
+  .description('Start the Model Context Protocol server for AI agents')
+  .action(async () => {
+    // Import and start the MCP server
+    const { spawn } = await import('child_process');
+    const path = await import('path');
+    const { fileURLToPath } = await import('url');
+
+    const __filename = fileURLToPath(import.meta.url);
+    const __dirname = path.dirname(__filename);
+    const mcpServerPath = path.join(__dirname, 'mcp-server.js');
+
+    try {
+      // Check if built version exists, otherwise use tsx with source
+      const fs = await import('fs');
+      if (fs.existsSync(mcpServerPath)) {
+        spawn('node', [mcpServerPath], { stdio: 'inherit' });
+      } else {
+        spawn('npx', ['tsx', path.join(__dirname, '../src/mcp-server.ts')], { stdio: 'inherit' });
+      }
+    } catch (error) {
+      console.error('Failed to start MCP server:', error);
+      process.exit(1);
+    }
+  });
+
 // Utility functions
 async function buildConversionOptions(
   mode: 'encode' | 'decode',
