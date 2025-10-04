@@ -8,7 +8,7 @@ A modern, efficient, purpose-built CLI utility to convert any possible input fil
 
 [![npm version](https://badge.fury.io/js/all-your-base64.svg)](https://badge.fury.io/js/all-your-base64)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![Node.js CI](https://github.com/skullzarmy/all-your-base64/workflows/Node.js%20CI/badge.svg)](https://github.com/skullzarmy/all-your-base64/actions)
+[![CI](https://github.com/skullzarmy/all-your-base64/workflows/CI/badge.svg)](https://github.com/skullzarmy/all-your-base64/actions)
 
 ## Features
 
